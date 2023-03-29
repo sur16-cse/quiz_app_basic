@@ -84,6 +84,12 @@ class _MyAppState extends State<MyApp> {
                 ),
             )
             : Result(_totalScore,_resetQuiz),
+
+
+
+
+
+            
       ),
     );
   }

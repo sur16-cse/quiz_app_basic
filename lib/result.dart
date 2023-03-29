@@ -13,6 +13,11 @@ class Result extends StatelessWidget {
       resultText = "Pretty likeable";
     } else if (resultScore <= 25) {
       resultText = "You are sweet and positive person";
+
+
+
+
+      
     } else {
       resultText = "You are best and awesome";
     }
