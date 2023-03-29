@@ -73,14 +73,16 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('My First App'),
+          title: const Text('My Quiz App'),
         ),
         body: _questionIndex < _questions.length
-            ? Quiz(
-                answerQuestion: _answerQuestion,
-                questions: _questions,
-                questionIndex: _questionIndex,
-              )
+            ? Container(
+              child: Quiz(
+                  answerQuestion: _answerQuestion,
+                  questions: _questions,
+                  questionIndex: _questionIndex,
+                ),
+            )
             : Result(_totalScore,_resetQuiz),
       ),
     );
