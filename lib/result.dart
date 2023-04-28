@@ -4,7 +4,7 @@ class Result extends StatelessWidget {
   final int resultScore;
   final VoidCallback resetHandler;
 
-  const Result(this.resultScore,this.resetHandler, {super.key});
+  const Result(this.resultScore, this.resetHandler, {super.key});
   String get resultPhrase {
     String resultText;
     if (resultScore <= 18) {
@@ -13,11 +13,6 @@ class Result extends StatelessWidget {
       resultText = "Pretty likeable";
     } else if (resultScore <= 25) {
       resultText = "You are sweet and positive person";
-
-
-
-
-      
     } else {
       resultText = "You are best and awesome";
     }
@@ -35,7 +30,10 @@ class Result extends StatelessWidget {
             style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
-          OutlinedButton(onPressed: resetHandler,child: const Text('Restart Quiz'),)
+          OutlinedButton(
+            onPressed: resetHandler,
+            child: const Text('Restart Quiz'),
+          )
         ],
       ),
     );
