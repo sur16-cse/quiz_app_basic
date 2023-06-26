@@ -1,16 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:push_notification_firebase/helpers/notification_services.dart';
 import './quiz.dart';
 import './result.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  NotificationServices.backgroundMessage();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _MyAppState();
   }
 }
@@ -18,6 +24,24 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
   var _totalScore = 0;
+
+  NotificationServices notificationServices = NotificationServices();
+
+  @override
+  void initState() {
+    notificationServices.requestNotificationPermissions();
+      notificationServices.isTokenRefresh();
+    notificationServices.getDeviceToken().then((value) {
+      if (kDebugMode) {
+        print("device token");
+        print(value);
+      }
+    });
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+
+    super.initState();
+  }
 
   void _resetQuiz() {
     setState(() {
@@ -69,18 +93,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print(notificationServices);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('My Quiz App'),
         ),
         body: _questionIndex < _questions.length
-            ? Container(
-                child: Quiz(
-                  answerQuestion: _answerQuestion,
-                  questions: _questions,
-                  questionIndex: _questionIndex,
-                ),
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questions: _questions,
+                questionIndex: _questionIndex,
               )
             : Result(_totalScore, _resetQuiz),
       ),
