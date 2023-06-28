@@ -29,18 +29,28 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+
     notificationServices.requestNotificationPermissions();
-      notificationServices.isTokenRefresh();
+    notificationServices.isTokenRefresh();
     notificationServices.getDeviceToken().then((value) {
       if (kDebugMode) {
         print("device token");
         print(value);
       }
     });
+    
     notificationServices.firebaseInit(context);
     notificationServices.setupInteractMessage(context);
+    notificationServices.updateStatus();
+    notificationServices.sendRegistrationToken();
 
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+   
+    super.didChangeDependencies();
   }
 
   void _resetQuiz() {
