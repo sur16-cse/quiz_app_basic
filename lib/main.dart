@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:push_notification_firebase/helpers/notification_services.dart';
 import './quiz.dart';
 import './result.dart';
+import 'message_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
   var _totalScore = 0;
-
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   NotificationServices notificationServices = NotificationServices();
 
   @override
@@ -39,8 +40,9 @@ class _MyAppState extends State<MyApp> {
       }
     });
     
-    notificationServices.firebaseInit(context);
-    notificationServices.setupInteractMessage(context);
+    notificationServices.firebaseInit(context, navigatorKey);
+
+    notificationServices.setupInteractMessage(context,navigatorKey);
     notificationServices.updateStatus();
     notificationServices.sendRegistrationToken();
 
@@ -103,8 +105,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+     
     print(notificationServices);
     return MaterialApp(
+      navigatorKey: navigatorKey,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('My Quiz App'),
@@ -117,6 +121,9 @@ class _MyAppState extends State<MyApp> {
               )
             : Result(_totalScore, _resetQuiz),
       ),
+      routes: <String, WidgetBuilder>{
+        '/message': (BuildContext context) => const MyWidget(),
+      }
     );
   }
 }
